@@ -9,7 +9,7 @@ Original file is located at
 
 # **Student Name:** Sidra Umer(1377381)
 
-# **Functions:** Factorial, Prime Check, Square Root
+# This project adds and searches contacts using a dictionary.
 
 contacts = {}
 print("Contact dictionary is ready.")
