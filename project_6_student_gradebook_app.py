@@ -9,7 +9,7 @@ Original file is located at
 
 # **Student Name:** Sidra Umer(1377381)
 
-# ** CSV File Handling and Simple Exception Handling in Jupyter Notebook **
+# ** CSV File Handling and Simple Exception Handling **
 
 import csv
 file_name = "student_grades.csv"
