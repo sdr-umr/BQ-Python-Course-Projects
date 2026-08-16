@@ -11,101 +11,84 @@ Original file is located at
 
 # ** CSV File Handling and Simple Exception Handling **
 
+# importing csv module to use tools in csv library and create file using these tools
 import csv
-file_name = "student_grades.csv"
+file='student_records.csv'
 
+# Create a csv file
 try:
-    file = open(file_name, "r")
-    file.close()
-
+  check_file=open(file,'r')
+  check_file.close()
 except FileNotFoundError:
-    file = open(file_name, "w", newline="")
-    writer = csv.writer(file)
+  new_file=open(file,'w',newline="")
+  writer=csv.writer(new_file)
+  writer.writerow(['Name','Subject','Marks','Grade'])
+  new_file.close
+  print("your desired file created")
 
-    writer.writerow(["Name", "Subject", "Marks", "Grade"])
-
-    file.close()
-
-    print("Gradebook file created.")
-
+#Function for calculating Student marks
 def calculate_grade(marks):
+  if marks>=80:
+    print('A')
+  elif marks>=70:
+    print('B')
+  elif marks>=60:
+    print('C')
+  elif marks>=50:
+    print('D')
+  else:
+    return 'F'
 
-    if marks >= 80:
-        return "A"
-    elif marks >= 70:
-        return "B"
-    elif marks >= 60:
-        return "C"
-    elif marks >= 50:
-        return "D"
-    else:
-        return "F"
+# adding student information in created csv file
+def add_students():
+  try:
+    name=input("Enter your name")
+    subject=input("Enter your subject")
+    marks=int(input("Enter your obtained Marks"))
+    if name=='' or subject=='':
+      print("Yous missed subject or name to enter")
+      return
+    if marks <0 or marks >100:
+      print("marks must be between 0 and 100")
+      return
+    grade=calculate_grade(marks)
 
-def add_student():
+    #saving record in created csv file
+    new_file=open(file,'a',newline='')
+    writer=csv.writer(new_file)
+    writer.writerow([name,subject,marks,grade])
+    new_file.close()
+    print("Student record has been saved!")
+  except ValueError:
+    print("Kindly enter marks as a value error")
 
-    try:
-        name = input("Enter student name: ")
-        subject = input("Enter subject: ")
+# check and view the information of added students
+def view_student():
+  try:
+    new_file=open(file,'r')
+    read_file=csv.reader(new_file)
+    next(read_file)
+    print("\n=======All student records=======")
+    for row in read_file:
+      print("Name",row[0],'\n',"Subject",row[1],'\n',"Marks",row[2],'\n',"Grade",row[3])
+    new_file.close()
+  except FileNotFoundError:
+    print("File not found")
 
-        if name == "" or subject == "":
-            print("Name and subject cannot be empty.")
-            return
-        marks = int(input("Enter marks from 0 to 100: "))
-        if marks < 0 or marks > 100:
-            print("Marks must be between 0 and 100.")
-            return
-        grade = calculate_grade(marks)
-
-        file = open(file_name, "a", newline="")
-        writer = csv.writer(file)
-
-        writer.writerow([name, subject, marks, grade])
-
-        file.close()
-
-        print("Student record saved.")
-        print("Grade:", grade)
-
-    except ValueError:
-        print("Please enter marks as a number.")
-
-def view_students():
-
-    try:
-        file = open(file_name, "r")
-        reader = csv.reader(file)
-        next(reader)
-        print("\n===== ALL STUDENT RECORDS =====")
-        for row in reader:
-
-            print("Name:", row[0])
-            print("Subject:", row[1])
-            print("Marks:", row[2])
-            print("Grade:", row[3])
-            print("--------------------")
-        file.close()
-
-    except FileNotFoundError:
-        print("Gradebook file not found.")
-
+# asking form user to perform actions
 while True:
+  print('\n========Student Gradebook======','\n',"1. Add Student",'\n',"2. View Student",'\n',"3. Exit")
+  Choice=input("enter your choice")
+  if Choice=='1':
+    add_students()
+  elif Choice=='2':
+    view_student()
+  elif Choice=='3':
+    print("Gradebook closed")
+    break
+  else:
+    print("Invalid Choice: Enter 1,2,or 3")
 
-    print("\n===== STUDENT GRADEBOOK =====")
-    print("1. Add Student")
-    print("2. View Students")
-    print("3. Exit")
-
-    choice = input("Enter your choice: ")
-
-    if choice == "1":
-        add_student()
-
-    elif choice == "2":
-        view_students()
-
-    elif choice == "3":
-        print("Gradebook closed.")
-        break
-
-    else:
-        print("Invalid choice. Enter 1, 2, or 3.")
+# download file in computer
+from google.colab import files
+files.download('student_records.csv')
